@@ -41,9 +41,9 @@ class ListaDoblementeEnlazada: #creamos la lista
         if posicion<0 or posicion >self.tamanio:
             raise Exception("Posición inválida") 
         if posicion == 0:
-            self.agregar_al_inicio(dato)
+            self._agregar_al_inicio(dato)
         elif posicion == self.tamanio:
-            self.agregar_al_final(dato)
+            self._agregar_al_final(dato)
         else:
             nuevo_nodo=Nodo(dato)
             actual=self.cabeza
@@ -57,18 +57,77 @@ class ListaDoblementeEnlazada: #creamos la lista
             self.tamanio += 1
     
     def extraer(self,posicion):
+        if self.esta_vacia():
+            raise Exception("La lista está vacía")
         if posicion<0 or posicion >self.tamanio:
             raise Exception("Posición inválida") 
-        if posicion==None:
-            #HAY QUE USR LO MISM,O QUE INSERTAR PARA UBICARNOS EN EL LUGAR CORRECTO
+        if posicion==0:
+            nodo_a_extraer = self.cabeza
+            dato = nodo_a_extraer.dato
+            self.cabeza = nodo_a_extraer.siguiente
+            if self.cabeza is not None:
+               self.cabeza.anterior = None
+            else:
+               self.cola = None
+        elif posicion==self.tamanio-1:
+            nodo_a_extraer = self.cola
+            dato = nodo_a_extraer.dato
+            self.cola = nodo_a_extraer.anterior
+            if self.cola is not None:
+               self.cola.siguiente = None
+            else:
+                self.cabeza = None
             
             
+        else:
+            actual=self.cabeza
+            for _ in range(posicion):
+                actual = actual.siguiente
+            dato=actual.dato    
+            actual.anterior.siguiente=actual.siguiente
+            actual.siguiente.anterior=actual.anterior
+        self.tamanio -= 1    
+        return dato
     def copiar(self):
-        copia=ListaDobleEnlazada() 
+        copia=ListaDoblementeEnlazada() 
         actual=self.cabeza
         while actual is not None:
-            copia.agregar_al_final(actual_dato)
+            copia._agregar_al_final(actual.dato)
             actual=actual.siguiente
         return copia
-    
+    def invertir(self): #falta ver las exepciones
+        actual=self.cabeza
+        while actual is not None:
+            actual.siguiente,actual.anterior=actual.anterior,actual.siguiente
+            actual=actual.anterior
+        self.cabeza,self.cola=self.cola,self.cabeza #para hacerlo a la vez
+        
+        
+    def concatenar (self,lista): #falta ver las exepciones
+        # Recibe una lista como argumento y retorna la lista actual 
+        # con la lista pasada como parámetro concatenada al final de la primera.
+        if self.esta_vacia():
+            self.cabeza=lista.cabeza
+            self.cola=lista.cola
+            self.tamanio=lista.tamanio
+            return self 
+        elif lista.esta_vacia():
+            return self
+        self.cola.siguiente=lista.cabeza
+        lista.cabeza.anterior=self.cola
+        self.cola=lista.cola
+        self.tamanio+=lista.tamanio
+        return self
+    def __len__(self):#PREGUNTAR PARAMETRO
+        return self.tamanio
+    def __add__(self,lista):
+        return self.concatenar(lista)
+    def __iter__(self): #PREGUNTAR PARAMTERO
+        actual=self.cabeza
+        lista=[]
+        for _ in range(self.tamanio):
+            lista.append(actual.dato)
+            actual=actual.siguiente
+    return lista 
+
     

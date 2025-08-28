@@ -1,0 +1,13 @@
+módulo <nombre del módulo>
+importa <lista de módulos que necesita usar>
+exporta
+ {parte pública: definición de constantes, nombres de tipos, encabezamientos
+ de procedimientos y funciones}
+ ...
+implementación
+ {parte privada: se incluyen las definiciones de los tipos cuyos nombres aparecen
+ en la parte pública, otros tipos privados, el código de procedimientos
+ y funciones...}
+ ...
+fin
+

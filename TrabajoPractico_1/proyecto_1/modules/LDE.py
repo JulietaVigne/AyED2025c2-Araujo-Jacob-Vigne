@@ -1,11 +1,12 @@
-
+# módulo para organizar funciones o clases utilizadas en nuestro proyecto
+# Crear tantos módulos como sea necesario para organizar el código
 class Nodo: #creamos los nodos
     def __init__(self,dato):
         self.dato=dato
         self.siguiente=None
         self.anterior=None
         
-class ListaDoblementeEnlazada: #creamos la lista
+class ListaDoblementeEnlazada: #creamos la clase LDE
     def __init__(self):
         self.cabeza=None
         self.cola=None
@@ -15,7 +16,7 @@ class ListaDoblementeEnlazada: #creamos la lista
     def esta_vacia(self):
         return self.cabeza is None
     
-    def _agregar_al_inicio(self,dato):
+    def agregar_al_inicio(self,dato):
         nuevo_nodo=Nodo(dato)
         if self.cabeza is None:
             self.cabeza=nuevo_nodo
@@ -26,7 +27,7 @@ class ListaDoblementeEnlazada: #creamos la lista
             self.cabeza=nuevo_nodo
         self.tamanio+=1
 
-    def _agregar_al_final(self,dato):
+    def agregar_al_final(self,dato):
         nuevo_nodo=Nodo(dato)
         if self.cabeza is None:
             self.cabeza=nuevo_nodo
@@ -41,9 +42,9 @@ class ListaDoblementeEnlazada: #creamos la lista
         if posicion<0 or posicion >self.tamanio:
             raise Exception("Posición inválida") 
         if posicion == 0:
-            self._agregar_al_inicio(dato)
+            self.agregar_al_inicio(dato)
         elif posicion == self.tamanio:
-            self._agregar_al_final(dato)
+            self.agregar_al_final(dato)
         else:
             nuevo_nodo=Nodo(dato)
             actual=self.cabeza
@@ -92,7 +93,7 @@ class ListaDoblementeEnlazada: #creamos la lista
         copia=ListaDoblementeEnlazada() 
         actual=self.cabeza
         while actual is not None:
-            copia._agregar_al_final(actual.dato)
+            copia.agregar_al_final(actual.dato)
             actual=actual.siguiente
         return copia
     def invertir(self): #falta ver las exepciones
@@ -128,6 +129,32 @@ class ListaDoblementeEnlazada: #creamos la lista
         for _ in range(self.tamanio):
             lista.append(actual.dato)
             actual=actual.siguiente
-    return lista 
+        return lista 
 
-    
+    def __str__(self):
+        elementos = []
+        actual = self.cabeza
+        while actual is not None:
+            elementos.append(str(actual.dato))
+            actual = actual.siguiente
+        return " <-> ".join(elementos)
+
+#PRUEBAS DE USO
+
+lista1=ListaDoblementeEnlazada()
+Lista2=ListaDoblementeEnlazada()
+
+#AGREGAR ELEMENTOS
+ #Agregar al inicio
+lista1.agregar_al_inicio(10)
+lista1.agregar_al_inicio(20)
+lista1.agregar_al_inicio(30)
+
+ #Agregar al final
+
+lista1.agregar_al_final(40)
+lista1.agregar_al_final(50)
+
+print("Lista despues de agregar al inicio y al final:")
+print(lista1)
+ 

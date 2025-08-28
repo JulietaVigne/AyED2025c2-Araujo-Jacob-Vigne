@@ -121,8 +121,11 @@ class ListaDoblementeEnlazada: #creamos la clase LDE
         return self
     def __len__(self):#PREGUNTAR PARAMETRO
         return self.tamanio
-    def __add__(self,lista):
-        return self.concatenar(lista)
+    def __add__(self,lista1):
+        lista_nueva=ListaDoblementeEnlazada()
+        lista_nueva.concatenar(self)
+        lista_nueva.concatenar(lista1)
+        return (lista_nueva)
     def __iter__(self): #PREGUNTAR PARAMTERO
         actual=self.cabeza
         lista=[]
@@ -142,7 +145,7 @@ class ListaDoblementeEnlazada: #creamos la clase LDE
 #PRUEBAS DE USO
 
 lista1=ListaDoblementeEnlazada()
-Lista2=ListaDoblementeEnlazada()
+lista2=ListaDoblementeEnlazada()
 
 #AGREGAR ELEMENTOS
  #Agregar al inicio
@@ -155,6 +158,29 @@ lista1.agregar_al_inicio(30)
 lista1.agregar_al_final(40)
 lista1.agregar_al_final(50)
 
-print("Lista despues de agregar al inicio y al final:")
+# print("Lista despues de agregar al inicio y al final:")
+# print(lista1)
+
+# lista1.esta_vacia()
+# print("¿La lista está vacía?", lista1.esta_vacia())
+
+# lista1.insertar(26,3)
+# print(lista1)
+
+# lista1.extraer(4)
+# print(lista1)  
+# lista1.copiar()
+# print(lista1)
+
+# lista1.invertir()
+# print(lista1)
+for _ in range(3):
+    lista2.agregar_al_inicio(_)
+print(lista2)    
+# lista1.concatenar(lista2)
+# print(lista1)
+
+print(lista1.__len__())
+lista1
+lista1.__add__(lista2)
 print(lista1)
- 

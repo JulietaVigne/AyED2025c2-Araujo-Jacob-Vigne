@@ -78,7 +78,10 @@ class ListaDobleEnlazada: #creamos la clase LDE
                self.cola.siguiente = None
             else:
                 self.cabeza = None
-            
+        elif posicion is None:
+            nodo_a_extraer = self.cola
+            dato = nodo_a_extraer.dato
+            self.cola = nodo_a_extraer.anterior   
             
         else:
             actual=self.cabeza
@@ -89,8 +92,9 @@ class ListaDobleEnlazada: #creamos la clase LDE
             actual.siguiente.anterior=actual.anterior
         self.tamanio -= 1    
         return dato
+    
     def copiar(self):
-        copia=ListaDoblementeEnlazada() 
+        copia=ListaDobleEnlazada() 
         actual=self.cabeza
         while actual is not None:
             copia.agregar_al_final(actual.dato)
@@ -144,19 +148,19 @@ class ListaDobleEnlazada: #creamos la clase LDE
 
 #PRUEBAS DE USO
 
-lista1=ListaDobleEnlazada()
-lista2=ListaDobleEnlazada()
+# lista1=ListaDobleEnlazada()
+# lista2=ListaDobleEnlazada()
 
 #AGREGAR ELEMENTOS
  #Agregar al inicio
-lista1.agregar_al_inicio(10)
-lista1.agregar_al_inicio(20)
-lista1.agregar_al_inicio(30)
+# lista1.agregar_al_inicio(10)
+# lista1.agregar_al_inicio(20)
+# lista1.agregar_al_inicio(30)
 
- #Agregar al final
+#  #Agregar al final
 
-lista1.agregar_al_final(40)
-lista1.agregar_al_final(50)
+# lista1.agregar_al_final(40)
+# lista1.agregar_al_final(50)
 
 # print("Lista despues de agregar al inicio y al final:")
 # print(lista1)
@@ -174,13 +178,13 @@ lista1.agregar_al_final(50)
 
 # lista1.invertir()
 # print(lista1)
-for _ in range(3):
-    lista2.agregar_al_inicio(_)
-print(lista2)    
-# lista1.concatenar(lista2)
-# print(lista1)
+# for _ in range(3):
+#     lista2.agregar_al_inicio(_)
+# print(lista2)    
+# # lista1.concatenar(lista2)
+# # print(lista1)
 
-print(lista1.__len__())
-lista1
-lista1.__add__(lista2)
-print(lista1)
+# print(lista1.__len__())
+# lista1
+# lista1.__add__(lista2)
+# print(lista1)

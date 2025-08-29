@@ -57,7 +57,9 @@ class ListaDobleEnlazada: #creamos la clase LDE
             actual.anterior = nuevo_nodo
             self.tamanio += 1
     
-    def extraer(self,posicion):
+    def extraer(self,posicion=None):
+        if posicion is None:
+            posicion=self.tamanio-1   
         if self.esta_vacia():
             raise Exception("La lista está vacía")
         if posicion<0 or posicion >self.tamanio:
@@ -70,7 +72,7 @@ class ListaDobleEnlazada: #creamos la clase LDE
                self.cabeza.anterior = None
             else:
                self.cola = None
-        elif posicion==self.tamanio-1:
+        elif posicion==self.tamanio:
             nodo_a_extraer = self.cola
             dato = nodo_a_extraer.dato
             self.cola = nodo_a_extraer.anterior
@@ -78,11 +80,7 @@ class ListaDobleEnlazada: #creamos la clase LDE
                self.cola.siguiente = None
             else:
                 self.cabeza = None
-        elif posicion is None:
-            nodo_a_extraer = self.cola
-            dato = nodo_a_extraer.dato
-            self.cola = nodo_a_extraer.anterior   
-            
+        
         else:
             actual=self.cabeza
             for _ in range(posicion):
@@ -121,14 +119,15 @@ class ListaDobleEnlazada: #creamos la clase LDE
         self.cola.siguiente=lista.cabeza
         lista.cabeza.anterior=self.cola
         self.cola=lista.cola
+        self.cabeza.anterior=None
+        self.cola.siguiente=None
         self.tamanio+=lista.tamanio
         return self
     def __len__(self):#PREGUNTAR PARAMETRO
         return self.tamanio
     def __add__(self,lista1):
         lista_nueva=ListaDobleEnlazada()
-        lista_nueva.concatenar(self)
-        lista_nueva.concatenar(lista1)
+        lista_nueva= self + lista1
         return (lista_nueva)
     def __iter__(self): #PREGUNTAR PARAMTERO
         actual=self.cabeza
@@ -146,45 +145,47 @@ class ListaDobleEnlazada: #creamos la clase LDE
             actual = actual.siguiente
         return " <-> ".join(elementos)
 
-#PRUEBAS DE USO
+if __name__ == "__main__":
+        
+    #PRUEBAS DE USO
 
-# lista1=ListaDobleEnlazada()
-# lista2=ListaDobleEnlazada()
+    lista1=ListaDobleEnlazada()
+    lista2=ListaDobleEnlazada()
 
-#AGREGAR ELEMENTOS
- #Agregar al inicio
-# lista1.agregar_al_inicio(10)
-# lista1.agregar_al_inicio(20)
-# lista1.agregar_al_inicio(30)
+    #AGREGAR ELEMENTOS
+    #Agregar al inicio
+    lista1.agregar_al_inicio(10)
+    lista1.agregar_al_inicio(20)
+    lista1.agregar_al_inicio(30)
 
-#  #Agregar al final
+     #Agregar al final
 
-# lista1.agregar_al_final(40)
-# lista1.agregar_al_final(50)
+    lista1.agregar_al_final(40)
+    lista1.agregar_al_final(50)
 
-# print("Lista despues de agregar al inicio y al final:")
-# print(lista1)
+    print("Lista despues de agregar al inicio y al final:")
+    print(lista1)
 
-# lista1.esta_vacia()
-# print("¿La lista está vacía?", lista1.esta_vacia())
+    lista1.esta_vacia()
+    print("¿La lista está vacía?", lista1.esta_vacia())
 
-# lista1.insertar(26,3)
-# print(lista1)
+    lista1.insertar(26,3)
+    print(lista1)
 
-# lista1.extraer(4)
-# print(lista1)  
-# lista1.copiar()
-# print(lista1)
+    lista1.extraer(4)
+    print(lista1)  
+    lista1.copiar()
+    print(lista1)
 
-# lista1.invertir()
-# print(lista1)
-# for _ in range(3):
-#     lista2.agregar_al_inicio(_)
-# print(lista2)    
-# # lista1.concatenar(lista2)
-# # print(lista1)
+    lista1.invertir()
+    print(lista1)
+    for _ in range(3):
+        lista2.agregar_al_inicio(_)
+    print(lista2)    
+    # lista1.concatenar(lista2)
+    # print(lista1)
 
-# print(lista1.__len__())
-# lista1
-# lista1.__add__(lista2)
-# print(lista1)
+    print(lista1.__len__())
+    lista1
+    lista1.__add__(lista2)
+    print(lista1)

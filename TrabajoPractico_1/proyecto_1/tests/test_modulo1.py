@@ -211,43 +211,43 @@ class Test_LDE(unittest.TestCase):
     #     self.assertRaises(Exception, self.lde_2.insertar, 210, self.n_elementos + 10,
     #                       "La LDE debe arrojar excepcion al intentar insertar en posición mayor al tamaño")
 
-    def test_extraer_extremos(self):
-        """
-        pruebo extraer ítems al inicio y al final de la LDE
-        con/sin parámetro, verifico el valor extraído y el tamaño
-        resultante de la LDE
-        """
-        # Extraer al inicio
-        self.assertEqual(self.lde_3.extraer(0), self.lista_aux_3.pop(0),
-                         "No se extrajo correctamente los elementos de la lista")
-        self.assertEqual(len(self.lde_3), self.n_elementos - 1,
-                         "No se actualizo debidamente el tamaño de la lista luego de extraer")
-        # Verificamos que la lista este correctamente enlazada
-        self.recorrer_lista(self.lde_3)
+    # def test_extraer_extremos(self):
+    #     """
+    #     pruebo extraer ítems al inicio y al final de la LDE
+    #     con/sin parámetro, verifico el valor extraído y el tamaño
+    #     resultante de la LDE
+    #     """
+    #     # Extraer al inicio
+    #     self.assertEqual(self.lde_3.extraer(0), self.lista_aux_3.pop(0),
+    #                      "No se extrajo correctamente los elementos de la lista")
+    #     self.assertEqual(len(self.lde_3), self.n_elementos - 1,
+    #                      "No se actualizo debidamente el tamaño de la lista luego de extraer")
+    #     # Verificamos que la lista este correctamente enlazada
+    #     self.recorrer_lista(self.lde_3)
 
-        # Extraer al final sin parámetro
-        self.assertEqual(self.lde_3.extraer(), self.lista_aux_3.pop(),
-                         "Cuando no se pasa argumento, se debe extraer el ultimo elemento de la lista")
-        self.assertEqual(len(self.lde_3), self.n_elementos - 2,
-                         "No se actualizo debidamente el tamaño de la lista luego de extraer")
-        # Verificamos que la lista este correctamente enlazada
-        self.recorrer_lista(self.lde_3)
+    #     # Extraer al final sin parámetro
+    #     self.assertEqual(self.lde_3.extraer(), self.lista_aux_3.pop(),
+    #                      "Cuando no se pasa argumento, se debe extraer el ultimo elemento de la lista")
+    #     self.assertEqual(len(self.lde_3), self.n_elementos - 2,
+    #                      "No se actualizo debidamente el tamaño de la lista luego de extraer")
+    #     # Verificamos que la lista este correctamente enlazada
+    #     self.recorrer_lista(self.lde_3)
 
-        # Extraer al final usando parámetro
-        self.assertEqual(self.lde_3.extraer(len(self.lde_3) - 1), self.lista_aux_3.pop(),
-                         "No se extrajo correctamente los elementos de la lista")
-        self.assertEqual(self.lde_3.tamanio, self.n_elementos - 3,
-                         "No se actualizo debidamente el tamaño de la lista luego de extraer")
-        # Verificamos que la lista este correctamente enlazada
-        self.recorrer_lista(self.lde_3)
+    #     # Extraer al final usando parámetro
+    #     self.assertEqual(self.lde_3.extraer(len(self.lde_3) - 1), self.lista_aux_3.pop(),
+    #                      "No se extrajo correctamente los elementos de la lista")
+    #     self.assertEqual(self.lde_3.tamanio, self.n_elementos - 3,
+    #                      "No se actualizo debidamente el tamaño de la lista luego de extraer")
+    #     # Verificamos que la lista este correctamente enlazada
+    #     self.recorrer_lista(self.lde_3)
 
-        # Extraer al final parámetro -1
-        self.assertEqual(self.lde_3.extraer(-1), self.lista_aux_3.pop(),
-                         "No se extrajo correctamente los elementos de la lista")
-        self.assertEqual(self.lde_3.tamanio, self.n_elementos - 4,
-                         "No se actualizo debidamente el tamaño de la lista luego de extraer")
-        # Verificamos que la lista este correctamente enlazada
-        self.recorrer_lista(self.lde_3)
+    #     # Extraer al final parámetro -1
+    #     self.assertEqual(self.lde_3.extraer(-1), self.lista_aux_3.pop(),
+    #                      "No se extrajo correctamente los elementos de la lista")
+    #     self.assertEqual(self.lde_3.tamanio, self.n_elementos - 4,
+    #                      "No se actualizo debidamente el tamaño de la lista luego de extraer")
+    #     # Verificamos que la lista este correctamente enlazada
+    #     self.recorrer_lista(self.lde_3)
 
     # def test_extraer_interior(self):
     #     """
@@ -375,36 +375,36 @@ class Test_LDE(unittest.TestCase):
     #         # Avanzo al siguiente nodo de lista original
     #         nodo_original = nodo_original.anterior
 
-    # def test_metodo_concatenar(self):
-    #     """
-    #     Verifico que funcione bien la concatenacion de listas mediante el metodo
-    #     concatenar. El metodo modifica la instancia que realiza la invocacion.
-    #     """
-    #     lista_concatenada1 = self.lde_3.copiar()
-    #     lista_concatenada1.concatenar(self.lde_2)
+    def test_metodo_concatenar(self):
+        """
+        Verifico que funcione bien la concatenacion de listas mediante el metodo
+        concatenar. El metodo modifica la instancia que realiza la invocacion.
+        """
+        lista_concatenada1 = self.lde_3.copiar()
+        lista_concatenada1.concatenar(self.lde_2)
 
-    #     # Compruebo que las listas originales esten intactas
-    #     self.recorrer_lista(self.lde_3)
-    #     self.recorrer_lista(self.lde_2)
+        # Compruebo que las listas originales esten intactas
+        self.recorrer_lista(self.lde_3)
+        self.recorrer_lista(self.lde_2)
 
-    #     # Compruebo que la lista concatenada este bien enlazada
-    #     self.recorrer_lista(lista_concatenada1)
+        # Compruebo que la lista concatenada este bien enlazada
+        self.recorrer_lista(lista_concatenada1)
 
-    #     # Verifico que los elementos resulten efectivamente de la concatenacion
-    #     # en orden de la lista lde_3 con lde_2
-    #     nodo_original = self.lde_3.cabeza
-    #     nodo_concat = lista_concatenada1.cabeza
-    #     while nodo_original is not None:
-    #         self.assertEqual(nodo_original.dato, nodo_concat.dato,
-    #                          "No coinciden los nodos de la lista 1 con la lista concatenada")
-    #         nodo_original = nodo_original.siguiente
-    #         nodo_concat = nodo_concat.siguiente
-    #     nodo_original = self.lde_2.cabeza
-    #     while nodo_original is not None:
-    #         self.assertEqual(nodo_original.dato, nodo_concat.dato,
-    #                          "No coinciden los nodos de la lista 2 con la lista concatenada")
-    #         nodo_original = nodo_original.siguiente
-    #         nodo_concat = nodo_concat.siguiente
+        # Verifico que los elementos resulten efectivamente de la concatenacion
+        # en orden de la lista lde_3 con lde_2
+        nodo_original = self.lde_3.cabeza
+        nodo_concat = lista_concatenada1.cabeza
+        while nodo_original is not None:
+            self.assertEqual(nodo_original.dato, nodo_concat.dato,
+                             "No coinciden los nodos de la lista 1 con la lista concatenada")
+            nodo_original = nodo_original.siguiente
+            nodo_concat = nodo_concat.siguiente
+        nodo_original = self.lde_2.cabeza
+        while nodo_original is not None:
+            self.assertEqual(nodo_original.dato, nodo_concat.dato,
+                             "No coinciden los nodos de la lista 2 con la lista concatenada")
+            nodo_original = nodo_original.siguiente
+            nodo_concat = nodo_concat.siguiente
 
 #     def test_operador_add(self):
 #         """

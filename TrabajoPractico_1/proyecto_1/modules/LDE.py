@@ -84,7 +84,7 @@ class ListaDobleEnlazada: #creamos la clase LDE
         else:
             actual=self.cabeza
             for _ in range(posicion):
-                actual = actual.siguiente
+                actual = actual.siguiente  #me parece que no es actual.siguiente
             dato=actual.dato    
             actual.anterior.siguiente=actual.siguiente
             actual.siguiente.anterior=actual.anterior
@@ -98,6 +98,7 @@ class ListaDobleEnlazada: #creamos la clase LDE
             copia.agregar_al_final(actual.dato)
             actual=actual.siguiente
         return copia
+    
     def invertir(self): #falta ver las exepciones
         actual=self.cabeza
         while actual is not None:
@@ -116,13 +117,14 @@ class ListaDobleEnlazada: #creamos la clase LDE
             return self 
         elif lista.esta_vacia():
             return self
-        self.cola.siguiente=lista.cabeza
-        lista.cabeza.anterior=self.cola
-        self.cola=lista.cola
-        self.cabeza.anterior=None
-        self.cola.siguiente=None
-        self.tamanio+=lista.tamanio
-        return self
+        else:
+            self.cola.siguiente=lista.cabeza
+            lista.cabeza.anterior=self.cola
+            self.cola=lista.cola
+            self.cabeza.anterior=None
+            self.cola.siguiente=None
+            self.tamanio+=lista.tamanio
+            return self
     def __len__(self):#PREGUNTAR PARAMETRO
         return self.tamanio
     def __add__(self,lista1):

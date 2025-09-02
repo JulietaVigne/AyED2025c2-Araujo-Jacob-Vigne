@@ -375,13 +375,47 @@ class Test_LDE(unittest.TestCase):
     #         # Avanzo al siguiente nodo de lista original
     #         nodo_original = nodo_original.anterior
 
-    def test_metodo_concatenar(self):
+    # def test_metodo_concatenar(self):
+    #     """
+    #     Verifico que funcione bien la concatenacion de listas mediante el metodo
+    #     concatenar. El metodo modifica la instancia que realiza la invocacion.
+    #     """
+    #     lista_concatenada1 = self.lde_3.copiar()
+    #     lista_concatenada1.concatenar(self.lde_2)
+
+    #     # Compruebo que las listas originales esten intactas
+    #     self.recorrer_lista(self.lde_3)
+    #     self.recorrer_lista(self.lde_2)
+
+    #     # Compruebo que la lista concatenada este bien enlazada
+    #     self.recorrer_lista(lista_concatenada1)
+
+    #     # Verifico que los elementos resulten efectivamente de la concatenacion
+    #     # en orden de la lista lde_3 con lde_2
+    #     nodo_original = self.lde_3.cabeza
+    #     nodo_concat = lista_concatenada1.cabeza
+    #     while nodo_original is not None:
+    #         self.assertEqual(nodo_original.dato, nodo_concat.dato,
+    #                          "No coinciden los nodos de la lista 1 con la lista concatenada")
+    #         nodo_original = nodo_original.siguiente
+    #         nodo_concat = nodo_concat.siguiente
+    #     nodo_original = self.lde_2.cabeza
+    #     while nodo_original is not None:
+    #         self.assertEqual(nodo_original.dato, nodo_concat.dato,
+    #                          "No coinciden los nodos de la lista 2 con la lista concatenada")
+    #         nodo_original = nodo_original.siguiente
+    #         nodo_concat = nodo_concat.siguiente
+
+    def test_operador_add(self):
         """
-        Verifico que funcione bien la concatenacion de listas mediante el metodo
-        concatenar. El metodo modifica la instancia que realiza la invocacion.
+        Verifico que funcione la concatenacion de listas mediante
+        el uso del operador +
+        Este operador devuelve una LDE que reuslta de la concatenación de las
+        dos LDE que recibe como operandos. Internamente no modifica ninguno
+        de sus dos operandos.
         """
-        lista_concatenada1 = self.lde_3.copiar()
-        lista_concatenada1.concatenar(self.lde_2)
+        # lista_concatenada1 = self.lista_aux_3 + self.lista_aux_2
+        lista_concatenada1 = self.lde_3 + self.lde_2
 
         # Compruebo que las listas originales esten intactas
         self.recorrer_lista(self.lde_3)
@@ -405,40 +439,6 @@ class Test_LDE(unittest.TestCase):
                              "No coinciden los nodos de la lista 2 con la lista concatenada")
             nodo_original = nodo_original.siguiente
             nodo_concat = nodo_concat.siguiente
-
-#     def test_operador_add(self):
-#         """
-#         Verifico que funcione la concatenacion de listas mediante
-#         el uso del operador +
-#         Este operador devuelve una LDE que reuslta de la concatenación de las
-#         dos LDE que recibe como operandos. Internamente no modifica ninguno
-#         de sus dos operandos.
-#         """
-#         # lista_concatenada1 = self.lista_aux_3 + self.lista_aux_2
-#         lista_concatenada1 = self.lde_3 + self.lde_2
-
-#         # Compruebo que las listas originales esten intactas
-#         self.recorrer_lista(self.lde_3)
-#         self.recorrer_lista(self.lde_2)
-
-#         # Compruebo que la lista concatenada este bien enlazada
-#         self.recorrer_lista(lista_concatenada1)
-
-#         # Verifico que los elementos resulten efectivamente de la concatenacion
-#         # en orden de la lista lde_3 con lde_2
-#         nodo_original = self.lde_3.cabeza
-#         nodo_concat = lista_concatenada1.cabeza
-#         while nodo_original is not None:
-#             self.assertEqual(nodo_original.dato, nodo_concat.dato,
-#                              "No coinciden los nodos de la lista 1 con la lista concatenada")
-#             nodo_original = nodo_original.siguiente
-#             nodo_concat = nodo_concat.siguiente
-#         nodo_original = self.lde_2.cabeza
-#         while nodo_original is not None:
-#             self.assertEqual(nodo_original.dato, nodo_concat.dato,
-#                              "No coinciden los nodos de la lista 2 con la lista concatenada")
-#             nodo_original = nodo_original.siguiente
-#             nodo_concat = nodo_concat.siguiente
 
 #     def test_iteracion(self):
 #         """

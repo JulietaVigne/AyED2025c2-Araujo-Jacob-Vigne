@@ -120,25 +120,7 @@ class ListaDobleEnlazada: #creamos la clase LDE
             return self 
         elif lista.esta_vacia():
             return self
-<<<<<<< HEAD
-        self.cola.siguiente=lista.cabeza
-        lista.cabeza.anterior=self.cola
-        self.cola=lista.cola
-        lista.cabeza.anterior=None
-        self.cola.siguiente=None
-        self.tamanio+=lista.tamanio
-        return self
-    
-=======
-        else:
-            self.cola.siguiente=lista.cabeza
-            lista.cabeza.anterior=self.cola
-            self.cola=lista.cola
-            self.cabeza.anterior=None
-            self.cola.siguiente=None
-            self.tamanio+=lista.tamanio
-            return self
->>>>>>> 9cb8626ddd46a17504a801a1e7ab88a1ab2ca155
+
     def __len__(self):#PREGUNTAR PARAMETRO
         return self.tamanio
     

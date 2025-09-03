@@ -120,22 +120,30 @@ class ListaDobleEnlazada: #creamos la clase LDE
             return self 
         elif lista.esta_vacia():
             return self
-
-    def __len__(self):#PREGUNTAR PARAMETRO
+        self.cola.siguiente=lista.cabeza
+        lista.cabeza.anterior=self.cola
+        self.cola=lista.cola
+        lista.cabeza.anterior=None
+        self.cola.siguiente=None
+        self.tamanio+=lista.tamanio
+        return self
+        
+    def __len__(self):
         return self.tamanio
     
     def __add__(self,lista1):
-        lista_nueva=ListaDobleEnlazada()
-        lista_nueva= self.concatenar(lista1)
+        lista_nueva=self.copiar()
+        lista_nueva.concatenar(lista1)
         return (lista_nueva)
     
     def __iter__(self): #PREGUNTAR PARAMTERO
         actual=self.cabeza
-        lista=[]
         for _ in range(self.tamanio):
-            lista.append(actual.dato)
+            nodo_dato=self.cabeza
+            dato=nodo_dato.dato
             actual=actual.siguiente
-        return lista 
+            
+        yield dato 
 
     def __str__(self):
         elementos = []

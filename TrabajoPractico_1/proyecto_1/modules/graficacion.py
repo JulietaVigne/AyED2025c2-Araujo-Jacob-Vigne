@@ -1,4 +1,5 @@
-from matplotlib import pyplot as plt
+from matplotlib import pyplot as plt #EN LA COMPU DE C/U HAY QUE INSTALAR MATPLOTLIB
+#APRIETO LOS TRE PUNTITOS (...) A LA IZQUIERDA, CREO UNA TERMINAL NUEVA Y LE ESCRIBO: pip install matplotlib
 from random import randint
 import time
 from modules.LDE import ListaDobleEnlazada
@@ -45,9 +46,9 @@ for n in tamanos:
     
 # Gráfico para inserción
 plt.figure(figsize=(10, 6))
-plt.plot(tamanos, tiempos_len, marker='o', label="eliminar cola - O(1)", color='green')
-plt.plot(tamanos, tiempos_invertir, marker='o', label="eliminar cola_list - O(1)", color='purple')
-plt.plot(tamanos, tiempos_copiar, marker='o', label="eliminar cola_list - O(n)", color='red')
+plt.plot(tamanos, tiempos_len, marker='o', label="Método len - O(1)", color='green')
+plt.plot(tamanos, tiempos_invertir, marker='o', label="Método invertir- O(1)", color='purple')
+plt.plot(tamanos, tiempos_copiar, marker='o', label="Método copiar - O(n)", color='red')
 plt.xlabel('Tamaño de la lista')
 plt.ylabel('Tiempo (segundos)')
 plt.title('Comparación de tiempos de métodos len, copiar e insertar en LDE')

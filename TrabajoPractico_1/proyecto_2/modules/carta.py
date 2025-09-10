@@ -4,13 +4,6 @@ Created on Tue Aug  9 16:51:54 2022
 
 @author: Cátedra de Algoritmos y Estructura de Datos
 """
-class Mazo:
-    def __init__(self):
-        self.cartas = ListaDobleEnlazada()
-
-# El juego se realiza por turnos: en cada turno, ambos jugadores deben colocar sus cartas 
-# boca abajo sobre la mesa. El jugador 1 voltea la primera carta del mazo en el centro de la mesa. 
-# El jugador 2 hace lo mismo con la primera carta de su mazo.
 
 
 class Carta:

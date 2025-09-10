@@ -1,7 +1,7 @@
 from matplotlib import pyplot as plt
 from random import randint
 import time
-from modules.LDE import ListaDobleEnlazada
+from modules.Problema_1.LDE import ListaDobleEnlazada
 
 
 tamanos = [1000, 2000, 3000, 4000, 5000]

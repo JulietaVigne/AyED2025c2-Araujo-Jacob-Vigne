@@ -3,55 +3,64 @@ from matplotlib import pyplot as plt
 from random import randint
 import time
 
-#LISTA PARA PRUEBAS
-def lista_500():
-    lista = []
-    for _ in range(500):
-        lista.append(randint(10000, 99999))
-    return lista
-#HACEMOS EL ORDENAMIENTO BURBUJA
+# Importa tus funciones de ordenamiento
+from modules.ordenamiento_burbuja import ordenamientoBurbuja
+from modules.ordenamiento_rapido import ordenamientoRapido
+from modules.ordenamiento_residuos import ordenamientoResiduos  # Asumiendo que aquí está tu radix sort
 
+# Tamaños de listas a probar
+tamanos = list(range(1, 1001, 50))  # De 1 a 1000 en pasos de 50 para no tardar mucho
 
-ordenamiento_burbuja=ordenamientoBurbuja(unaLista)
-#print(unaLista)
-# ordenamiento_sorted = sorted(unaLista)
+# Listas para guardar tiempos
+tiempos_burbuja = []
+tiempos_quicksort = []
+tiempos_residuos = []
 
-#TIEMPO Y GRAFICACIÓN
-tiempos_burbuja= []
-tiempos_quicksort=[]
-tiempos_residuos= []
+# Número de repeticiones para promediar tiempos
+repeticiones = 5
 
-contador = 0
-for _ in range(n):
-    inicio = time.perf_counter()
-    ordenamiento_burbuja(unaLista)
-    fin = time.perf_counter()
-    contador += (fin - inicio)
-tiempos_burbuja.append(contador)
+for tamaño in tamanos:
+    # Generar lista aleatoria para este tamaño
+    lista_original = [randint(0, 10000) for _ in range(tamaño)]
 
-contador = 0
-for _ in range(n):
-    inicio = time.perf_counter()
-    lde.copiar()
-    fin = time.perf_counter()
-    contador += (fin - inicio)
-tiempos_quicksort.append(contador)
+    # --- Burbuja ---
+    tiempo_total = 0
+    for _ in range(repeticiones):
+        lista = lista_original.copy()
+        inicio = time.perf_counter()
+        ordenamientoBurbuja(lista)
+        fin = time.perf_counter()
+        tiempo_total += (fin - inicio)
+    tiempos_burbuja.append(tiempo_total / repeticiones)
 
-contador = 0
-for _ in range(n):
-    inicio = time.perf_counter()
-    lde.invertir()
-    fin = time.perf_counter()
-    contador += (fin - inicio)
-tiempos_residuos.append(contador)
-# Gráfico para inserción
-plt.figure(figsize=(10, 6))
-plt.plot(tamanos, tiempos_burbuja, marker='o', label="Método len - O(1)", color='green')
-plt.plot(tamanos, tiempos_quicksort, marker='o', label="Método invertir- O(n)", color='purple')
-plt.plot(tamanos, tiempos_residuos, marker='o', label="Método copiar - O(n)", color='red')
+    # --- Quicksort ---
+    tiempo_total = 0
+    for _ in range(repeticiones):
+        lista = lista_original.copy()
+        inicio = time.perf_counter()
+        ordenamientoRapido(lista)
+        fin = time.perf_counter()
+        tiempo_total += (fin - inicio)
+    tiempos_quicksort.append(tiempo_total / repeticiones)
+
+    # --- Radix Sort (residuos) ---
+    tiempo_total = 0
+    for _ in range(repeticiones):
+        lista = lista_original.copy()
+        inicio = time.perf_counter()
+        ordenamientoResiduos(lista)
+        fin = time.perf_counter()
+        tiempo_total += (fin - inicio)
+    tiempos_residuos.append(tiempo_total / repeticiones)
+
+# Graficar resultados
+plt.figure(figsize=(12, 7))
+plt.plot(tamanos, tiempos_burbuja, marker='o', label="Burbuja - O(n²)", color='green')
+plt.plot(tamanos, tiempos_quicksort, marker='o', label="Quicksort - O(n log n)", color='purple')
+plt.plot(tamanos, tiempos_residuos, marker='o', label="Radix Sort (residuos) - O(d·(n + k))", color='red')
 plt.xlabel('Tamaño de la lista')
-plt.ylabel('Tiempo (segundos)')
-plt.title('Comparación de tiempos de métodos len, copiar e insertar en LDE')
+plt.ylabel('Tiempo promedio (segundos)')
+plt.title('Comparación de tiempos de ejecución de algoritmos de ordenamiento')
 plt.legend()
-plt.grid()
+plt.grid(True)
 plt.show()

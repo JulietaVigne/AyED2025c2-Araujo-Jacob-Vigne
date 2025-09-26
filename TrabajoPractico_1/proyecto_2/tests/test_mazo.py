@@ -15,21 +15,21 @@ class TestMazo(unittest.TestCase):
     def setUp(self):
         self.mazo= Mazo()
 
-    # def test_poner_sacar_arriba(self):            #Poner arriba al momento de repartir las cartas, sacar arriba al momento de jugar el turno
-    #     carta1=Carta('5','trebol')
-    #     carta2=Carta('3','corazones')
+    def test_poner_sacar_arriba(self):            #Poner arriba al momento de repartir las cartas, sacar arriba al momento de jugar el turno
+        carta1=Carta('5','trebol')
+        carta2=Carta('3','corazones')
 
-    #     # Se colocan las cartas arriba
-    #     self.mazo.poner_carta_arriba(carta1)
-    #     self.mazo.poner_carta_arriba(carta2)
+        # Se colocan las cartas arriba
+        self.mazo.poner_carta_arriba(carta1)
+        self.mazo.poner_carta_arriba(carta2)
 
-    #     # Se sacan las cartas arriba
-    #     carta_control = self.mazo.sacar_carta_arriba()
-    #     self.assertIs(carta2, carta_control)
+        # Se sacan las cartas arriba
+        carta_control = self.mazo.sacar_carta_arriba()
+        self.assertIs(carta2, carta_control)
 
-    #     #Se verifica que la carta que queda en el mazo se la que se coloco primero
-    #     carta_control = self.mazo.sacar_carta_arriba()
-    #     self.assertIs(carta1, carta_control)
+        #Se verifica que la carta que queda en el mazo se la que se coloco primero
+        carta_control = self.mazo.sacar_carta_arriba()
+        self.assertIs(carta1, carta_control)
 
 
     def test_poner_abajo(self):                     #Poner abajo al momento de ganar el turno

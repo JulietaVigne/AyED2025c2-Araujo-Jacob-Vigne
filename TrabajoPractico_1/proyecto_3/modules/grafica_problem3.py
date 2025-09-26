@@ -6,10 +6,10 @@ import time
 # Importa tus funciones de ordenamiento
 from modules.ordenamiento_burbuja import ordenamientoBurbuja
 from modules.ordenamiento_rapido import ordenamientoRapido
-from modules.ord_radix import ordenamiento_radix  # Asumiendo que aquí está tu radix sort
+from modules.ordenamiento_radix import ordenamiento_radix  
 
 # Tamaños de listas a probar
-tamanos = list(range(1, 1000, 150))  # De 1 a 1000 en pasos de 50 para no tardar mucho
+tamanos = list(range(1, 1000, 150))  
 
 # Listas para guardar tiempos
 tiempos_burbuja = []
@@ -70,7 +70,7 @@ for tamaño in tamanos:
 
 # Graficar resultados
 plt.figure(figsize=(12, 7))
-#plt.plot(tamanos, tiempos_burbuja, marker='o', label="Burbuja - O(n²)", color='green')
+plt.plot(tamanos, tiempos_burbuja, marker='o', label="Burbuja - O(n²)", color='green')
 plt.plot(tamanos, tiempos_quicksort, marker='o', label="Quicksort - O(n log n)", color='purple')
 plt.plot(tamanos, tiempos_residuos, marker='o', label="Radix Sort (residuos) - O(d·(n + k))", color='red')
 plt.xlabel('Tamaño de la lista')

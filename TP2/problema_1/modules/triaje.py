@@ -6,8 +6,8 @@ Sala de emergencias
 import time
 import datetime
 import modules.paciente as pac
-import modules.modulo1 as mod1
-from modules.modulo1 import ColaDePrioridad
+import modules.clases as mod1
+from modules.clases import ColaDePrioridad
 import random
 
 n = 20  # cantidad de ciclos de simulación

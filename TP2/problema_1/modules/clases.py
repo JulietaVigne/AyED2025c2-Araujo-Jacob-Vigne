@@ -58,12 +58,26 @@ class ColaDePrioridad:
 
     def eliminar_cola(self):
         resultado = self.monticulo.eliminar_min()
-        if resultado:
-            return resultado[2]  # Devolver solo el elemento
-        return None
+        return resultado  # Devolver solo el elemento
+
     
     def primero(self):
         minimo = self.monticulo.minimo()
         if minimo:
             return minimo[2]
         return None
+    
+    def __len__(self):
+        return self.monticulo.tamanoActual
+   
+    def __iter__(self):
+        return iter(self.monticulo.listaMonticulo[1:])  # Saltea el primer elemento (0)
+
+if __name__ == "__main__":
+    from modules.paciente import Paciente 
+    cola = ColaDePrioridad()
+    cola.insertar_cola(Paciente())
+    cola.insertar_cola(Paciente())
+    cola.insertar_cola(Paciente())
+    print(cola.eliminar_cola())  # Debería imprimir 3
+    #print(cola.primero())        # Debería imprimir 5

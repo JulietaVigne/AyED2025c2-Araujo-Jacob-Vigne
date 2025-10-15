@@ -6,6 +6,7 @@ from modules.avl import ArbolAVL
 class Temperaturas_DB:
     def __init__ (self):
         self.arbol = ArbolAVL() #aca le digo que es un dato tipo ArbolAVL
+    
     def convertir_fecha (self,fecha): #convierte una fecha en formato "dd/mm/aaaa" a un objeto date.
         return datetime.strptime(fecha, "%d/%m/%Y").date() #lo hacemos para poder comparar fechas.
     
@@ -25,14 +26,30 @@ class Temperaturas_DB:
     def min_temp_rango(self,fecha1, fecha2): #devuelve la temperatura mínima entre los rangos fecha1 y fecha2 inclusive (fecha1 < fecha2). Esto no implica que los intervalos del rango deban ser fechas incluidas previamente en el árbol.
         fecha1_convertida= self.convertir_fecha(fecha1)
         fecha2_convertida= self.convertir_fecha(fecha2)
+    
     def temp_extremos_rango(self,fecha1, fecha2): #devuelve la temperatura mínima y máxima entre los rangos fecha1 y fecha2 inclusive (fecha1 < fecha2).
         fecha1_convertida= self.convertir_fecha(fecha1)
         fecha2_convertida= self.convertir_fecha(fecha2)
         
     def borrar_temperatura(self,fecha): #recibe una fecha y elimina del árbol la medición correspondiente a esa fecha.
         fecha_convertida= self.convertir_fecha(fecha)
+    
     def devolver_temperaturas(self,fecha1, fecha2): #devuelve un listado de las mediciones de temperatura en el rango recibido por parámetro con el formato “dd/mm/aaaa: temperatura ºC”, ordenado por fechas. 
         fecha1_convertida= self.convertir_fecha(fecha1)
         fecha2_convertida= self.convertir_fecha(fecha2)
+    
     def cantidad_muestras(self): #devuelve la cantidad de muestras de la BD.
         return self.arbol.tamano
+    
+#     with open("muestras.txt", "r") as archivo:
+#         for linea in archivo:
+#             fecha, temperatura = linea.strip().split(";")
+#             temperatura = float(temperatura)
+#             guardar_temperatura(temperatura, fecha)
+            
+# if __name__ == "__main__":
+#     db = Temperaturas_DB()
+#     print("Cantidad de muestras en la base de datos:", db.cantidad_muestras())
+#     fecha_consulta = "15/03/2023"
+#     temperatura = db.devolver_temperatura(fecha_consulta)
+#     print(temperatura)

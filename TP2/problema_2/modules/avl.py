@@ -1,17 +1,6 @@
 # -*- coding: utf-8 -*-
 #DEL LIBRO ABB (como plantilla), con codigos de metodos agregados
 
-class ArbolBinarioBusqueda:
-    def __init__(self):
-        self.raiz = None
-        self.tamano = 0
-    def longitud(self):
-        return self.tamano
-    def __len__(self):
-        return self.tamano
-    def __iter__(self):
-        return self.raiz.__iter__()
-
 class NodoArbol:
     def __init__(self,clave,valor,izquierdo=None,derecho=None,padre=None):
         self.clave = clave
@@ -54,10 +43,49 @@ class NodoArbol:
             self.hijoIzquierdo.padre = self
         if self.tieneHijoDerecho():
             self.hijoDerecho.padre = self
+    
+    def empalmar(self):
+       if self.esHoja():
+           if self.esHijoIzquierdo():
+                  self.padre.hijoIzquierdo = None
+           else:
+                  self.padre.hijoDerecho = None
+       elif self.tieneAlgunHijo():
+           if self.tieneHijoIzquierdo():
+                  if self.esHijoIzquierdo():
+                     self.padre.hijoIzquierdo = self.hijoIzquierdo
+                  else:
+                     self.padre.hijoDerecho = self.hijoIzquierdo
+                  self.hijoIzquierdo.padre = self.padre
+           else:
+                  if self.esHijoIzquierdo():
+                     self.padre.hijoIzquierdo = self.hijoDerecho
+                  else:
+                     self.padre.hijoDerecho = self.hijoDerecho
+                  self.hijoDerecho.padre = self.padre
+
+    def encontrarSucesor(self):
+      suc = None
+      if self.tieneHijoDerecho():
+          suc = self.hijoDerecho.encontrarMin()
+      else:
+          if self.padre:
+                 if self.esHijoIzquierdo():
+                     suc = self.padre
+                 else:
+                     self.padre.hijoDerecho = None
+                     suc = self.padre.encontrarSucesor()
+                     self.padre.hijoDerecho = self
+      return suc
+
+    def encontrarMin(self):
+      actual = self
+      while actual.tieneHijoIzquierdo():
+          actual = actual.hijoIzquierdo
+      return actual
 
 
-class ArbolBinarioBusqueda:
-
+class ArbolAVL: 
     def __init__(self):
         self.raiz = None
         self.tamano = 0
@@ -67,29 +95,32 @@ class ArbolBinarioBusqueda:
 
     def __len__(self):
         return self.tamano
-
+    
     def agregar(self,clave,valor):
         if self.raiz:
             self._agregar(clave,valor,self.raiz)
         else:
             self.raiz = NodoArbol(clave,valor)
         self.tamano = self.tamano + 1
-
+    
     def _agregar(self,clave,valor,nodoActual):
         if clave < nodoActual.clave:
             if nodoActual.tieneHijoIzquierdo():
-                   self._agregar(clave,valor,nodoActual.hijoIzquierdo)
+                self._agregar(clave,valor,nodoActual.hijoIzquierdo)
             else:
-                   nodoActual.hijoIzquierdo = NodoArbol(clave,valor,padre=nodoActual)
+                nodoActual.hijoIzquierdo = NodoArbol(clave,valor,padre=nodoActual)
+                self.actualizarEquilibrio(nodoActual.hijoIzquierdo)
         else:
             if nodoActual.tieneHijoDerecho():
-                   self._agregar(clave,valor,nodoActual.hijoDerecho)
+                self._agregar(clave,valor,nodoActual.hijoDerecho)
             else:
-                   nodoActual.hijoDerecho = NodoArbol(clave,valor,padre=nodoActual)
-
+                nodoActual.hijoDerecho = NodoArbol(clave,valor,padre=nodoActual)
+                self.actualizarEquilibrio(nodoActual.hijoDerecho)
+        
+    
     def __setitem__(self,c,v):
        self.agregar(c,v)
-
+   
     def obtener(self,clave):
        if self.raiz:
            res = self._obtener(clave,self.raiz)
@@ -132,49 +163,11 @@ class ArbolBinarioBusqueda:
          self.tamano = self.tamano - 1
       else:
          raise KeyError('Error, la clave no está en el árbol')
+     
+      self.actualizarEquilibrio(nodoAEliminar)
 
     def __delitem__(self,clave):
        self.eliminar(clave)
-
-    def empalmar(self):
-       if self.esHoja():
-           if self.esHijoIzquierdo():
-                  self.padre.hijoIzquierdo = None
-           else:
-                  self.padre.hijoDerecho = None
-       elif self.tieneAlgunHijo():
-           if self.tieneHijoIzquierdo():
-                  if self.esHijoIzquierdo():
-                     self.padre.hijoIzquierdo = self.hijoIzquierdo
-                  else:
-                     self.padre.hijoDerecho = self.hijoIzquierdo
-                  self.hijoIzquierdo.padre = self.padre
-           else:
-                  if self.esHijoIzquierdo():
-                     self.padre.hijoIzquierdo = self.hijoDerecho
-                  else:
-                     self.padre.hijoDerecho = self.hijoDerecho
-                  self.hijoDerecho.padre = self.padre
-
-    def encontrarSucesor(self):
-      suc = None
-      if self.tieneHijoDerecho():
-          suc = self.hijoDerecho.encontrarMin()
-      else:
-          if self.padre:
-                 if self.esHijoIzquierdo():
-                     suc = self.padre
-                 else:
-                     self.padre.hijoDerecho = None
-                     suc = self.padre.encontrarSucesor()
-                     self.padre.hijoDerecho = self
-      return suc
-
-    def encontrarMin(self):
-      actual = self
-      while actual.tieneHijoIzquierdo():
-          actual = actual.hijoIzquierdo
-      return actual
 
     def remover(self,nodoActual):
         if nodoActual.esHoja(): #hoja
@@ -205,26 +198,10 @@ class ArbolBinarioBusqueda:
                                                nodoActual.hijoDerecho.cargaUtil,
                                                nodoActual.hijoDerecho.hijoIzquierdo,
                                                nodoActual.hijoDerecho.hijoDerecho)
-
-class ArbolAVL (ArbolBinarioBusqueda): #subclase de ABB
-    def __init__(self):
-        super().__init__()
-    def _agregar (self,clave,valor,nodoActual):
-        if clave < nodoActual.clave:
-            if nodoActual.tieneHijoIzquierdo():
-                self._agregar(clave,valor,nodoActual.hijoIzquierdo)
-            else:
-                nodoActual.hijoIzquierdo = NodoArbol(clave,valor,padre=nodoActual)
-                self._verificarBalance(nodoActual.hijoIzquierdo)
-        else:
-            if nodoActual.tieneHijoDerecho():
-                self._agregar(clave,valor,nodoActual.hijoDerecho)
-            else:
-                nodoActual.hijoDerecho = NodoArbol(clave,valor,padre=nodoActual)
-                self._verificarBalance(nodoActual.hijoDerecho)
+      
     def actualizarEquilibrio (self,nodo):
         if nodo.factorEquilibrio > 1 or nodo.factorEquilibrio < -1:
-            self._reequilibrar(nodo)
+            self.reequilibrar(nodo)
             return
         if nodo.padre != None:
             if nodo.esHijoIzquierdo():
@@ -270,6 +247,7 @@ class ArbolAVL (ArbolBinarioBusqueda): #subclase de ABB
         rotRaiz.padre = nuevaRaiz
         rotRaiz.factorEquilibrio = rotRaiz.factorEquilibrio + 1 - min(nuevaRaiz.factorEquilibrio,0)
         nuevaRaiz.factorEquilibrio = nuevaRaiz.factorEquilibrio + 1 + max(rotRaiz.factorEquilibrio,0) 
+    
     def reequilibrar(self,nodo):
         if nodo.factorEquilibrio < 0:
                 if nodo.hijoDerecho.factorEquilibrio > 0:
@@ -283,4 +261,12 @@ class ArbolAVL (ArbolBinarioBusqueda): #subclase de ABB
                     self.rotarDerecha(nodo)
                 else:
                     self.rotarDerecha(nodo)    
-            
+
+if __name__ == "__main__":
+    arbol = ArbolAVL()
+    arbol.agregar(3,"uno")
+    arbol.agregar(1,"dos")
+    arbol.agregar(2,"tres")
+    print(arbol.raiz.clave)
+    print("hijo derecho: ", arbol.raiz.hijoDerecho.clave)
+    print("hijo izquierdo: ",arbol.raiz.hijoIzquierdo.clave)

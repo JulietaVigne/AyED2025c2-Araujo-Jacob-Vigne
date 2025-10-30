@@ -1,31 +1,31 @@
 from clases import Monticulo
-
+#del libro hasta obtenerPonderacion
 class Vertice:
     def __init__(self,clave):
         self.id = clave
         self.conectadoA = {} # Diccionario de adyacencias
         # Atributos extra para la implementacion de prim
         self.distancia = float('inf')  # Incicialmente infinita, distancia al predecesor
-        self.predecesor = None  # Predecesor en el camino más corto
-
+        self.predecesor = None  # 
+        
     def agregarVecino(self,vecino,ponderacion=0):
-        self.conectadoA[vecino] = ponderacion # Agrega un elemento al diccionario conectadoA
+        self.conectadoA[vecino] = ponderacion
 
     def __str__(self):
-        return str(self.id) + ' conectadoA: ' + str([x.id for x in self.conectadoA]) # Representacion del vertice en string
+        return str(self.id) + ' conectadoA: ' + str([x.id for x in self.conectadoA])# Representacion del vertice en string
 
-    def obtener_adyacentes(self):
+    def obtenerConexiones(self):
         return self.conectadoA.keys() # Devuelve los vertices vecinos
-    
-    def obtenerconectados(self):
-        return self.conectadoA # Devuelve el diccionario de adyacencias (vertices vecinos y sus ponderaciones)
-    
+
     def obtenerId(self):
         return self.id # Clave del vertice
 
     def obtenerPonderacion(self,vecino):
         return self.conectadoA[vecino] # Ponderacion de la arista hacia un vecino especifico
-    
+
+    def obtenerconectados(self):
+        return self.conectadoA # Devuelve el diccionario de adyacencias (vertices vecinos y sus ponderaciones)
+
     def asignar_distancia(self, distancia):
         self.distancia = distancia
 
@@ -37,7 +37,7 @@ class Vertice:
 
     def obtener_predecesor(self):  
         return self.predecesor
-    
+
 
 class Grafo:
     def __init__(self):
@@ -50,29 +50,28 @@ class Grafo:
         self.listaVertices[clave] = nuevoVertice # Lo agrega al diccionario de vertices
         return nuevoVertice
 
-    def obtenerVertice(self,n): # Ingresando una clave n
+    def obtenerVertice(self,n): 
         if n in self.listaVertices:
             return self.listaVertices[n]
         else:
             return None
 
-    def __contains__(self,n): # Para usar "n in grafo"
-        return n in self.listaVertices 
+    def __contains__(self,n):
+        return n in self.listaVertices
 
     def agregarArista(self,de,a,costo=0):
-        # Si el vertice no existe, lo crea
-        if de not in self.listaVertices:
+        if de not in self.listaVertices: #creo el vertice si no existe
             nv = self.agregarVertice(de)
         if a not in self.listaVertices:
             nv = self.agregarVertice(a)
         self.listaVertices[de].agregarVecino(self.listaVertices[a], costo)
 
     def obtenerVertices(self):
-        return self.listaVertices.keys()  # Devuelve las claves de los vertices del grafo
+        return self.listaVertices.keys()
 
-    def __iter__(self): # Permite iterar sobre los vertices del grafo
+    def __iter__(self):
         return iter(self.listaVertices.values())
-
+    
     def existe_vertice(self, vertice):
         return vertice.id in [v for v in self.listaVertices]
     
@@ -83,10 +82,9 @@ class Grafo:
                 aristas.append((v.obtenerId(), vecino.obtenerId(), ponderacion))
         return aristas
 
-
 def prim (G, inicio): # Algoritmo de Prim para encontrar el árbol de expansión mínima
     #Orden de complejidad O((V+E) log V) donde E es el número de aristas y V el número de vertices
-    cp = Monticulo() # Usa un monticulo de minima como estructura auxiliar
+    cp = monticulo() # Usa un monticulo de minima como estructura auxiliar
     for v in G:
         # Se inicializan los vertices con distancia infinita y sin predecesor
         v.asignar_distancia(float("inf")) 
@@ -94,7 +92,7 @@ def prim (G, inicio): # Algoritmo de Prim para encontrar el árbol de expansión
     inicio.asignar_distancia(0)
     cp.construirMonticulo([v for v in G], param1="obtener_distancia") # Construye el monticulo de vertices con la distancia como parametro
     while not cp.estavacio():
-        vertice_actual = cp.eliminar_min() # Extrae el vertice con la menor distancia
+        vertice_actual = cp.eliminarminimo(param1='obtener_distancia') # Extrae el vertice con la menor distancia
         for siguiente in vertice_actual.obtener_adyacentes(): # Itera sobre los vecinos
             nuevo_costo = vertice_actual.obtenerPonderacion(siguiente)
             if siguiente in cp and nuevo_costo < siguiente.obtener_distancia(): # Si el vecino está en el monticulo y el nuevo costo es menor su distancia
@@ -126,39 +124,25 @@ def predecesores_sucesores_aldeas(G): # Imprime los predecesores y sucesores de 
         elif len(sucesores) == 1:    
             print(f"La aldea {v.obtenerId()} recibe el mensaje desde {predecesor.obtenerId()} y debe enviar réplicas a {sucesores[0]}.")
         else:
-            print(f"La aldea {v.obtenerId()} recibe el mensaje desde {predecesor.obtenerId()} y debe enviar réplicas a {', '.join(sucesores[:-1])} y {sucesores[-1]}.")
-               
-        
-            
-if __name__ == "__main__":
-    g = Grafo()
-    for i in range(0,8):
-        g.agregarVertice(i)
+            print(f"La aldea {v.obtenerId()} recibe el mensaje desde {predecesor.obtenerId()} y debe enviar réplicas a {', '.join(sucesores[:-1])} y {sucesores[-1]}.")   
 
-    g.agregarArista(0,4,8)
-    g.agregarArista(4,0,8)
-    g.agregarArista(3,0,8)
-    g.agregarArista(0,3,8)
-    g.agregarArista(3,5,1)
-    g.agregarArista(5,3,1)
-    g.agregarArista(3,7,6)
-    g.agregarArista(7,3,6)
-    g.agregarArista(7,6,1)
-    g.agregarArista(6,7,1)
-    g.agregarArista(7,4,1)
-    g.agregarArista(4,7,1)
-    g.agregarArista(5,2,8)
-    g.agregarArista(2,5,8)
-    g.agregarArista(2,1,1)
-    g.agregarArista(1,2,1)
-    g.agregarArista(2,6,6)
-    g.agregarArista(6,2,6)
-
-    prim(g, g.obtenerVertice(3))
-    print("Árbol de expansión mínima:")
-    for v in g:
-        if v.obtener_predecesor() is not None:
-            print(f"{v.obtener_predecesor().obtenerId()} - {v.obtenerId()} con costo {v.obtener_distancia()}")
-
-    print(f"La distancia total es: {distanciatotal(g)}")
-    print(g.obtenerVertices())
+    # def construirGrafo(archivoPalabras):
+    # d = {}
+    # g = Grafo()
+    # archivo = open(archivoPalabras,'r')
+    # # crear baldes de palabras que se diferencian por una letra
+    # for linea in archivo:
+    #     palabra = linea[:-1]
+    #     for i in range(len(palabra)):
+    #         balde = palabra[:i] + '_' + palabra[i+1:]
+    #         if balde in d:
+    #             d[balde].append(palabra)
+    #         else:
+    #             d[balde] = [palabra]
+    # # agregar vértices y aristas para palabras en el mismo balde
+    # for balde in d.keys():
+    #     for palabra1 in d[balde]:
+    #         for palabra2 in d[balde]:
+    #             if palabra1 != palabra2:
+    #                 g.agregarArista(palabra1,palabra2)
+    # return g

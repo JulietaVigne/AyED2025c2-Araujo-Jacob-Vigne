@@ -2,18 +2,25 @@ from grafos import*
 import csv
 
 with open("data/aldeas.txt", "r", encoding="utf-8") as archivo: #Abrimos el archivo de aldeas y volcamos su contenido en una lista
-    lector = csv.reader(archivo)
+    # lector = csv.reader(archivo)
     datos = []
-    for fila in lector:
-        if fila:  # Verifica que la fila no esté vacía
-            datos.append([fila[0], fila[1].strip(), int(fila[2])]) # Convierte la distancia a entero y elimina espacios en blanco
+    # for fila in lector:
+    #     if fila:  # Verifica que la fila no esté vacía
+    #         datos.append([fila[0], fila[1].strip(), int(fila[2])]) # Convierte la distancia a entero y elimina espacios en blanco
+    for linea in archivo:
+        partes = linea.strip().split(',')
+        if len(partes) == 3:
+            origen = partes[0].strip()
+            destino = partes[1].strip()
+            distancia = int(partes[2].strip())
+            datos.append([origen, destino, distancia])
 
 grafo_aldeas = Grafo() # Crea un grafo vacío
 for fila in datos: # Recorre cada fila de datos y agrega las aristas al grafo (se crean vértices si no existen)
     origen = fila[0]
     destino = fila[1]
     distancia = fila[2]
-    grafo_aldeas.agregarArista(origen, destino, distancia) 
+    grafo_aldeas.agregarArista(origen, destino, float(distancia)) 
     
 lista_aldeas = [] # Crea una lista para almacenar los nombres de las aldeas
 for v in grafo_aldeas:

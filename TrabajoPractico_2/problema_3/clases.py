@@ -126,10 +126,31 @@ class Monticulo:
             elif hasattr(self, "infiltAbajo"):
                 self.infiltAbajo(i)
             i -= 1
-   # def decrementar_clave(self, elemento, nuevo_valor):
-   def __contains__(self, elemento):
+        
+    def __contains__(self, elemento):
         """Verifica si un elemento está en el montículo."""
-        return elemento in self.lista[1:self.tamanoActual + 1]S
+        # return elemento in self.lista[1:self.tamanoActual + 1][1]
+        for i in range(1, self.tamanoActual + 1):
+            if self.lista[i] == elemento:
+                return True
+        return False
+        
+    def __in__(self, dato):
+     return dato in self.lista
+    
+    def decrementar_clave(self, dato, nuevo_valor): # Para vertices de grafos y prim
+    # Busca el índice del dato
+    # Cambia el valor de distancia de un vertice a nuevo_vertice
+        for i in range(1, self.tam + 1):
+            if self.lista[i] == dato:
+                # Actualiza la distancia del vertice
+                dato.asignar_distancia(nuevo_valor)
+                self._infiltArriba(i) # Infiltra hacia arriba el vertice
+                break
+
+    def __iter__(self):
+        return iter(self.lista[1:]) 
+    
 
 if __name__ == "__main__":
     monticulo1 = Monticulo()
@@ -149,3 +170,4 @@ if __name__ == "__main__":
     print(monticulo2.tamano())  # Output: 5
     print(monticulo2.lista)  # Output: [None, 1, 2, 6, 4, 7]
     print(monticulo2.estavacio())  # Output: False
+    print(20 in monticulo1)

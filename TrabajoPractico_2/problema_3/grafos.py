@@ -1,4 +1,5 @@
 from clases import Monticulo
+import sys
 #del libro hasta obtenerPonderacion
 class Vertice:
     def __init__(self,clave):
@@ -21,23 +22,26 @@ class Vertice:
         return self.id # Clave del vertice
 
     def obtenerPonderacion(self,vecino):
-        return self.conectadoA.get(vecino,float('inf')) # Ponderacion de la arista hacia un vecino especifico Esto evita un KeyError si se pide una conexión inexistente (mejor manejo de excepciones).
-
+        #return self.conectadoA.get(vecino,float('inf')) # Ponderacion de la arista hacia un vecino especifico Esto evita un KeyError si se pide una conexión inexistente (mejor manejo de excepciones).
+        return self.conectadoA[vecino] # Ponderacion de la arista hacia un vecino especifico
+    
     def obtenerconectados(self):
         return self.conectadoA # Devuelve el diccionario de adyacencias (vertices vecinos y sus ponderaciones)
 
-    def asignar_distancia(self, distancia):
+    def asignarDistancia(self, distancia):
         self.distancia = distancia
 
-    def obtener_distancia(self): #Una vez expresado el arbol de expansion minima, devuelve la distancia al predecesor
+    def obtenerDistancia(self): #Una vez expresado el arbol de expansion minima, devuelve la distancia al predecesor
         return self.distancia
     
-    def asignar_predecesor(self, predecesor):   
+    def asignarPredecesor(self, predecesor):   
         self.predecesor = predecesor # Será un objeto Vertice
 
     def obtener_predecesor(self):  
         return self.predecesor
-
+    
+    def __lt__(self, other):
+        return self.distancia < other.distancia
 
 class Grafo:
     def __init__(self):
@@ -82,74 +86,33 @@ class Grafo:
                 aristas.append((v.obtenerId(), vecino.obtenerId(), ponderacion))
         return aristas
 
-# def prim(G, inicio):  # Algoritmo de Prim para encontrar el árbol de expansión mínima
-#     cp = Monticulo(key="obtener_distancia")  # Usa el key directamente
-#     for v in G:
-#         v.asignar_distancia(float("inf"))
-#         v.asignar_predecesor(None)
-#     inicio.asignar_distancia(0)
-#     cp.construirMonticulo([v for v in G]) 
-#     while not cp.estavacio():
-#         vertice_actual = cp.eliminarminimo()  
-#         for siguiente in vertice_actual.obtenerConexiones(): 
-#             nuevo_costo = vertice_actual.obtenerPonderacion(siguiente)
-#             if siguiente in cp and nuevo_costo < siguiente.obtener_distancia():
-#                 siguiente.asignar_distancia(nuevo_costo)
-#                 siguiente.asignar_predecesor(vertice_actual)
-#                 cp.decrementar_clave(siguiente, nuevo_costo)
 
-def prim(G, inicio):  # Algoritmo de Prim para encontrar el árbol de expansión mínima
-    cp = Monticulo(key="obtener_distancia")  # Usa el key directamente
+def prim(G,inicio):
+    cp = Monticulo()
     for v in G:
-        v.asignar_distancia(float("inf"))
-        v.asignar_predecesor(None)
-    inicio.asignar_distancia(0)
-    cp.construirMonticulo([v for v in G])
+        v.asignarDistancia(sys.maxsize)
+        v.asignarPredecesor(None)
+    inicio.asignarDistancia(0)
+    # cp.construirMonticulo([(v.obtenerDistancia(),v) for v in G])
+    for v in G:
+        cp.insertar((v.obtenerDistancia(),v))
     while not cp.estavacio():
-        try:
-            vertice_actual = cp.eliminarminimo()
-        except Exception as e:
-            break
-
-        if vertice_actual is None:
-            break
-
-        for siguiente in vertice_actual.obtenerConexiones():
-            try:
-                nuevo_costo = vertice_actual.obtenerPonderacion(siguiente)
-            except Exception as e:
-                try:
-                    vid = vertice_actual.obtenerId()
-                    sid = siguiente.obtenerId()
-                except Exception:
-                    vid = str(vertice_actual); sid = str(siguiente)
-                print(f"Error obteniendo ponderación {vid}->{sid}: {e}")
-                continue
-
-            try:
-                pertenencia = (siguiente in cp)
-            except Exception as e:
-                print(f"Error comprobando pertenencia en montículo para {getattr(siguiente,'obtenerId',lambda: str(siguiente))()}: {e}")
-                pertenencia = False
-
-            if pertenencia:
-                try:
-                    if nuevo_costo < siguiente.obtener_distancia():
-                        siguiente.asignar_distancia(nuevo_costo)
-                        siguiente.asignar_predecesor(vertice_actual)
-                        try:
-                            cp.decrementar_clave(siguiente, nuevo_costo)
-                        except Exception as e:
-                            print(f"Error en decrementar_clave para {getattr(siguiente,'obtenerId',lambda: str(siguiente))()}: {e}")
-                except Exception as e:
-                    print(f"Error actualizando vecino {getattr(siguiente,'obtenerId',lambda: str(siguiente))()}: {e}")
-
+        verticeActual = cp.eliminarminimo()[1]
+        print(verticeActual.obtenerId())
+        for verticeSiguiente in verticeActual.obtenerConexiones():
+          #print(verticeActual.obtenerConexiones())
+          nuevoCosto = verticeActual.obtenerPonderacion(verticeSiguiente)
+          variable=nuevoCosto<verticeSiguiente.obtenerDistancia()
+          if verticeSiguiente in cp and variable: #no lo encuentra en cp y si está
+              verticeSiguiente.asignarPredecesor(verticeActual)
+              verticeSiguiente.asignarDistancia(nuevoCosto)
+              cp.decrementarClave(verticeSiguiente,nuevoCosto)
                 
 def distanciatotal(G): # Suma las distancias del árbol de expansión mínima
     total = 0
     for v in G:
-        if v.obtener_predecesor() is not None:
-            total += v.obtener_distancia()
+        # if v.obtener_predecesor() is not None:
+            total += v.obtenerDistancia()
     return total
 
 
@@ -182,30 +145,42 @@ if __name__ == "__main__":
     for i in range(0,8):
         g.agregarVertice(i)
 
-    g.agregarArista(0,4,8)
-    g.agregarArista(4,0,8)
-    g.agregarArista(3,0,8)
-    g.agregarArista(0,3,8)
-    g.agregarArista(3,5,1)
-    g.agregarArista(5,3,1)
-    g.agregarArista(3,7,6)
-    g.agregarArista(7,3,6)
-    g.agregarArista(7,6,1)
-    g.agregarArista(6,7,1)
-    g.agregarArista(7,4,1)
-    g.agregarArista(4,7,1)
-    g.agregarArista(5,2,8)
-    g.agregarArista(2,5,8)
-    g.agregarArista(2,1,1)
-    g.agregarArista(1,2,1)
-    g.agregarArista(2,6,6)
-    g.agregarArista(6,2,6)
+    # g.agregarArista(000,4,8)
+    # g.agregarArista(444,0,8)
+    # g.agregarArista(333,0,8)
+    # g.agregarArista(000,3,8)
+    # g.agregarArista(333,5,1)
+    # g.agregarArista(555,3,1)
+    # g.agregarArista(300,7,6)
+    # g.agregarArista(7312,3,6)
+    # g.agregarArista(587,6,1)
+    # g.agregarArista(6578,7,1)
+    # g.agregarArista(777,4,1)
+    # g.agregarArista(478,7,1)
+    # g.agregarArista(578,2,8)
+    # g.agregarArista(442,5,8)
+    # g.agregarArista(552,1,1)
+    # g.agregarArista(881,2,1)
+    # g.agregarArista(332,6,6)
+    # g.agregarArista(556,2,6)
+    
+        
+    g.agregarArista(0,1,5)
+    g.agregarArista(0,5,2)
+    g.agregarArista(1,2,4)
+    g.agregarArista(2,3,9)
+    g.agregarArista(3,4,7)
+    g.agregarArista(3,5,3)
+    g.agregarArista(4,0,1)
+    g.agregarArista(5,4,8)
+    g.agregarArista(5,2,1)
 
     prim(g, g.obtenerVertice(3))
-    print("Árbol de expansión mínima:")
-    for v in g:
-        if v.obtener_predecesor() is not None:
-            print(f"{v.obtener_predecesor().obtenerId()} - {v.obtenerId()} con costo {v.obtener_distancia()}")
+    print(distanciatotal(g))
+    # print("Árbol de expansión mínima:")
+    # for v in g:
+    #     if v.obtener_predecesor() is not None:
+    #         print(f"{v.obtener_predecesor().obtenerId()} - {v.obtenerId()} con costo {v.obtener_distancia()}")
 
-    print(f"La distancia total es: {distanciatotal(g)}")
-    print(g.obtenerVertices())
+    # print(f"La distancia total es: {distanciatotal(g)}")
+    # print(g.obtenerVertices())

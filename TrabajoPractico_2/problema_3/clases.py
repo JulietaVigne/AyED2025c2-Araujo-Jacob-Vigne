@@ -3,18 +3,36 @@
 class Monticulo:
     def __init__(self, key=None):
         self.lista = [None]
-        self.tam = 0
+        self.tamanoActual = 0
         # key: función que dado un elemento devuelve el valor a comparar. Por defecto identidad.
         self.key = (key if key is not None else (lambda x: x))
 
 
     def insertar(self,k):
-        self.listaMonticulo.append(k)
+        self.lista.append(k)
         self.tamanoActual = self.tamanoActual + 1
-        self.infiltArriba(self.tamanoActual)
+        self._infiltArriba(self.tamanoActual)
 
+
+#NO ME ANDA EN GRAFOS
     def _menor(self, a, b):
-        return self.key(a) < self.key(b)    
+        try:
+            if callable(self.key):
+                return self.key(a) < self.key(b)
+            elif isinstance(self.key, str):
+                val_a = getattr(a, self.key)
+                val_b = getattr(b, self.key)
+                # Si son métodos, llamalos
+                if callable(val_a): val_a = val_a()
+                if callable(val_b): val_b = val_b()
+                return val_a < val_b
+            else:
+                return a < b
+        except AttributeError as e:
+            raise RuntimeError(f"Error en _menor: uno de los elementos no tiene el atributo {self.key}") from e
+        except Exception as e:
+            raise RuntimeError(f"Error en _menor: {e}")
+
     
     def _infiltArriba(self, i):
         while i // 2 > 0:
@@ -44,17 +62,17 @@ class Monticulo:
         if self.estavacio():
             return None
         minimo = self.lista[1]
-        self.lista[1] = self.lista[self.tam]
+        self.lista[1] = self.lista[self.tamanoActual]
         self.lista.pop()
-        self.tam -= 1
-        if self.tam > 0:
+        self.tamanoActual -= 1
+        if self.tamanoActual > 0:
             self._infiltAbajo(1)
         return minimo
 
     def _infiltAbajo(self, i):
-        while (i * 2) <= self.tam:
+        while (i * 2) <= self.tamanoActual:
             hijo = i * 2
-            if hijo + 1 <= self.tam and self._menor(self.lista[hijo + 1], self.lista[hijo]):
+            if hijo + 1 <= self.tamanoActual and self._menor(self.lista[hijo + 1], self.lista[hijo]):
                 hijo += 1
             if self._menor(self.lista[hijo], self.lista[i]):
                 self.lista[i], self.lista[hijo] = self.lista[hijo], self.lista[i]
@@ -66,7 +84,7 @@ class Monticulo:
         if i * 2 + 1 > self.tamanoActual:
             return i * 2
         else:
-            if self.listaMonticulo[i * 2] < self.listaMonticulo[i * 2 + 1]:
+            if self.lista[i * 2] < self.lista[i * 2 + 1]:
                 return i * 2
             else:
                 return i * 2 + 1
@@ -74,11 +92,11 @@ class Monticulo:
     def minimo(self):
         if self.tamanoActual == 0:
             return None
-        return self.listaMonticulo[1]
+        return self.lista[1]
     
     def estavacio(self):
         """Devuelve True si el montículo está vacío."""
-        return self.tamano() == 0
+        return self.tamanoActual == 0
 
     def tamano(self):
         """Devuelve el número de elementos en el montículo."""
@@ -108,38 +126,26 @@ class Monticulo:
             elif hasattr(self, "infiltAbajo"):
                 self.infiltAbajo(i)
             i -= 1
+   # def decrementar_clave(self, elemento, nuevo_valor):
+   def __contains__(self, elemento):
+        """Verifica si un elemento está en el montículo."""
+        return elemento in self.lista[1:self.tamanoActual + 1]S
 
-class ColaDePrioridad:
-    def __init__(self):
-        self.monticulo = Monticulo()
-        self.contador = 0
-
-    def insertar_cola(self, elemento):
-        self.contador += 1
-        self.monticulo.insertar(elemento)
-
-    def eliminar_cola(self):
-        resultado = self.monticulo.eliminar_min()
-        return resultado  # Devolver solo el elemento
-
-    
-    def primero(self):
-        minimo = self.monticulo.minimo()
-        if minimo:
-            return minimo[2]
-        return None
-    
-    def __len__(self):
-        return self.monticulo.tamanoActual
-   
-    def __iter__(self):
-        return iter(self.monticulo.listaMonticulo[1:])  # Saltea el primer elemento (0)
-
-# if __name__ == "__main__":
-#     from modules.paciente import Paciente 
-#     cola = ColaDePrioridad()
-#     cola.insertar_cola(Paciente())
-#     cola.insertar_cola(Paciente())
-#     cola.insertar_cola(Paciente())
-#     print(cola.eliminar_cola())  # Debería imprimir 3
-#     #print(cola.primero())        # Debería imprimir 5
+if __name__ == "__main__":
+    monticulo1 = Monticulo()
+    monticulo1.insertar(5)
+    monticulo1.insertar(3)
+    monticulo1.insertar(8)
+    monticulo1.insertar(1)
+    monticulo1.insertar(4)
+    print(monticulo1.lista)  # Output: [None, 1, 3, 4, 5, 8]
+    print(monticulo1.minimo())  # Output: 1
+    monticulo1.eliminarminimo()
+    print(monticulo1.lista)  # Output: [None, 3, 4, 5, 8]
+    print(monticulo1.tamano())  # Output: 4
+    monticulo2 = Monticulo()
+    unalista = [7, 2, 6, 4, 1]
+    monticulo2.construirMonticulo(unalista)
+    print(monticulo2.tamano())  # Output: 5
+    print(monticulo2.lista)  # Output: [None, 1, 2, 6, 4, 7]
+    print(monticulo2.estavacio())  # Output: False

@@ -1,32 +1,33 @@
-# -*- coding: utf-8 -*-
+#  -*- coding: utf-8 -*-
 
 from datetime import datetime
-from modules.avl import ArbolAVL
+from avl import ArbolAVL
+
 
 class Temperaturas_DB:
     def __init__ (self):
         self.arbol = ArbolAVL() #aca le digo que es un dato tipo ArbolAVL
-    
+   
     def convertir_fecha (self,fecha): #convierte una fecha en formato "dd/mm/aaaa" a un objeto date.
         return datetime.strptime(fecha, "%d/%m/%Y").date() #lo hacemos para poder comparar fechas.
-    
+   
     def guardar_temperatura(self,temperatura, fecha): #guarda la medida de temperatura asociada a la fecha.
        fecha_convertida= self.convertir_fecha(fecha)
        self.arbol.agregar(fecha_convertida,temperatura)#agrega un nodo al arbol con la clave fecha y el valor temperatura.
-        
+       
     def devolver_temperatura(self,fecha): #devuelve la medida de temperatura en la fecha determinada.
         fecha_convertida= self.convertir_fecha(fecha)
         return self.arbol.obtener(fecha_convertida) #devuelve el valor asociado(temperatura) a la clave fecha.
-    
+   
     def max_temp_rango(self,fecha1, fecha2): #devuelve la temperatura máxima entre los rangos fecha1 y fecha2 inclusive (fecha1 < fecha2). Esto no implica que los intervalos del rango deban ser fechas incluidas previamente en el árbol.
         fecha1_convertida= self.convertir_fecha(fecha1)
         fecha2_convertida= self.convertir_fecha(fecha2)
         max_temp = None
-            
+           
     def min_temp_rango(self,fecha1, fecha2): #devuelve la temperatura mínima entre los rangos fecha1 y fecha2 inclusive (fecha1 < fecha2). Esto no implica que los intervalos del rango deban ser fechas incluidas previamente en el árbol.
         fecha1_convertida= self.convertir_fecha(fecha1)
         fecha2_convertida= self.convertir_fecha(fecha2)
-    
+
     def temp_extremos_rango(self,fecha1, fecha2): #devuelve la temperatura mínima y máxima entre los rangos fecha1 y fecha2 inclusive (fecha1 < fecha2).
         fecha1_convertida= self.convertir_fecha(fecha1)
         fecha2_convertida= self.convertir_fecha(fecha2)
@@ -40,16 +41,21 @@ class Temperaturas_DB:
     
     def cantidad_muestras(self): #devuelve la cantidad de muestras de la BD.
         return self.arbol.tamano
+
+
+
+if __name__ == "__main__":
+    db = Temperaturas_DB()
+    # Cargar muestras desde archivo y guardarlas en el árbol
+    with open("data/muestras.txt", "r", encoding="utf-8") as archivo:
+        for linea in archivo:
+            fecha, temperatura = linea.strip().split(";")
+            temperatura = float(temperatura)
+            db.guardar_temperatura(temperatura, fecha)
+
+    print("Cantidad de muestras en la base de datos:", db.cantidad_muestras())
+    fecha_consulta = "15/03/2025"
+    temperatura = db.devolver_temperatura(fecha_consulta)
+    print(temperatura)
     
-#     with open("muestras.txt", "r") as archivo:
-#         for linea in archivo:
-#             fecha, temperatura = linea.strip().split(";")
-#             temperatura = float(temperatura)
-#             guardar_temperatura(temperatura, fecha)
-            
-# if __name__ == "__main__":
-#     db = Temperaturas_DB()
-#     print("Cantidad de muestras en la base de datos:", db.cantidad_muestras())
-#     fecha_consulta = "15/03/2023"
-#     temperatura = db.devolver_temperatura(fecha_consulta)
-#     print(temperatura)
+#PROBAR TODOS LOS METODOS CREADOS

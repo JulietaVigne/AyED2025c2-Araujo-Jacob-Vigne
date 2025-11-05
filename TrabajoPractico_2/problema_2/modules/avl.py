@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-#DEL LIBRO ABB (como plantilla), con codigos de metodos agregados
 
 class NodoArbol:
     def __init__(self,clave,valor,izquierdo=None,derecho=None,padre=None):

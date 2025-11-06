@@ -45,17 +45,76 @@ class Temperaturas_DB:
 
 
 if __name__ == "__main__":
-    db = Temperaturas_DB()
+    temp = Temperaturas_DB()
     # Cargar muestras desde archivo y guardarlas en el árbol
     with open("data/muestras.txt", "r", encoding="utf-8") as archivo:
         for linea in archivo:
             fecha, temperatura = linea.strip().split(";")
             temperatura = float(temperatura)
-            db.guardar_temperatura(temperatura, fecha)
+            temp.guardar_temperatura(temperatura, fecha)
 
-    print("Cantidad de muestras en la base de datos:", db.cantidad_muestras())
+
+    print("Cantidad de muestras en la base de datos:", temp.cantidad_muestras())
     fecha_consulta = "15/03/2025"
-    temperatura = db.devolver_temperatura(fecha_consulta)
+    temperatura = temp.devolver_temperatura(fecha_consulta)
     print(temperatura)
-    
+   
 #PROBAR TODOS LOS METODOS CREADOS
+   
+    #convertir_fecha
+    fecha_str="15/11/2025"
+    fecha_convertida=temp.convertir_fecha(fecha_str)
+    print(f"Entrada: {fecha_str}")
+    print(f"Salida: {fecha_convertida}, es de tipo {type(fecha_convertida)})")
+   
+    #guardar temperatutra
+    temp.guardar_temperatura(25.6,"5/11/2025")
+    temp.guardar_temperatura(30.6,"5/11/2025")
+    temp.guardar_temperatura(25.1,"7/11/2025")
+    temp.guardar_temperatura(27.9,"10/11/2025")
+    temp.guardar_temperatura(24.3,"20/11/2025")
+    temp.guardar_temperatura(23.9,"14/11/2025")
+    temp.guardar_temperatura(19.6,"8/11/2025")
+    temp.guardar_temperatura(17.5,"29/11/2025")
+    temp.guardar_temperatura(23.3,"6/11/2025")
+    temp.guardar_temperatura(30.2,"9/11/2025")
+    temp.guardar_temperatura(24.9,"13/11/2025")
+    temp.guardar_temperatura(21.7,"15/11/2025")
+    print("datos guardados en el árbol:", temp.arbol)
+   
+    #devolver_temp
+         #"consultar fecha existente"
+    fecha_ex="5/11/2025"
+    temperatura=temp.devolver_temperatura(fecha_ex)
+    print(f"Temperatura registrada el {fecha_ex}: {temp} °C")
+   
+         #"consultar fecha inexistente"
+    fecha_inex="2/11/2025"
+    temperaturaI=temp.devolver_temperatura(fecha_inex)
+    print(f"Temperatura registrada el {fecha_inex}: {temp}")
+   
+    #max_temp_rango, min, extremos
+    # Consultas el rango de fechas
+    fecha_inicio = "5/11/2025"
+    fecha_fin = "29/11/2025"
+    print("Temperaturas en rango:")
+    temp.devolver_temperaturas(fecha_inicio, fecha_fin)
+    print("Temperatura máxima en rango:", temp.max_temp_rango(fecha_inicio, fecha_fin), '°C')
+    print("Temperatura mínima en rango:", temp.min_temp_rango(fecha_inicio, fecha_fin), '°C')
+    print("Temperaturas extremas en rango:", temp.temp_extremos_rango(fecha_inicio, fecha_fin), '°C')
+    # Consultar cantidad de muestras
+    print("Cantidad de muestras:", temp.cantidad_muestras())
+
+
+    # Borrar algunas temperaturas
+    temp.borrar_temperatura("8/11/2025")
+    temp.borrar_temperatura("14/11/2025")
+
+
+    # Se muestran las temperaturas después de borrar algunas
+    print("Temperaturas después de borrar:")
+    temp.devolver_temperaturas()
+
+
+    # Cantidad de muestras después de borrar
+    print("Cantidad de muestras después de borrar:", temp.cantidad_muestras())

@@ -122,7 +122,7 @@ class ArbolAVL:
    
     def obtener(self,clave):
        if self.raiz:
-           res = self._obtener(clave,self.raiz)
+           res = self._obtener(clave, self.raiz)
            if res:
                   return res.cargaUtil
            else:
@@ -139,6 +139,16 @@ class ArbolAVL:
            return self._obtener(clave,nodoActual.hijoIzquierdo)
        else:
            return self._obtener(clave,nodoActual.hijoDerecho)
+    
+    def __iter__(self):
+            if self.raiz:
+                yield from self._inorder(self.raiz)
+    
+    def _inorder(self, nodo):
+        if nodo:
+            yield from self._inorder(nodo.hijoIzquierdo)
+            yield (nodo.clave, nodo.cargaUtil)
+            yield from self._inorder(nodo.hijoDerecho)
 
     def __getitem__(self,clave):
        return self.obtener(clave)

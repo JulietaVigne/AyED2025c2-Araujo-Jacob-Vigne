@@ -3,9 +3,8 @@
 Repositorio inicial para las clases de práctica de Algoritmos y Estructuras de Datos. En este repositorio se almacenarán los códigos de los trabajos prácticos presentados durante el cursado
 
 ## Integrantes del grupo:
-    - Araujo Ezcurra Inés
-    - Miraglio Jacob, Karen
-    -Vigne, Julieta
+    - Apellido y Nombre del primer integrante
+    - Apellido y Nombre del segundo integrante
 
 ## Cuatrimestre de cursado:
-    2do cuatrimestre del 2025
+    1er/2do cuatrimestre del 20xx

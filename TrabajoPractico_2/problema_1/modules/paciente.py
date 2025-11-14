@@ -43,11 +43,11 @@ class Paciente:
         cad += ' (llegada: ' + str(self.__orden_llegada) + ')'
         return cad
     
-    def __lt__ (self, otro): #"menor que" para comparar pacientes porque usamos min heap
-        if self.__riesgo<otro.__riesgo:
-            return True
-        elif self.__riesgo==otro.__riesgo:
+    def __lt__(self, otro): #less than para comparar pacientes porque se usa min heap
+        # Si ambos tienen el mismo riesgo, se atiende primero el que llegó antes
+        if self.get_riesgo() == otro.get_riesgo():
             return self.__orden_llegada < otro.__orden_llegada
+        # Si no, primero el que tiene riesgo mas delicado (1=crítico < 2=moderado < 3=bajo)
         else:
-            return False    
-        
+            return self.get_riesgo() < otro.get_riesgo()   
+    
